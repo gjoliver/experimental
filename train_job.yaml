@@ -1,0 +1,7 @@
+name: train_job_aws
+compute_config: aioa_aws
+cluster_env: "marwil-fix:3"
+runtime_env:
+  working_dir: "https://github.com/gjoliver/experimental/archive/refs/heads/master.zip"
+entrypoint: "python debug-marwil.py"
+max_retries: 1

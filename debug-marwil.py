@@ -34,7 +34,7 @@ def main():
 
     ts = datetime.now().strftime('%m%d-%H%M%S')
     results = tune.run(
-        "MARWIL",
+        "BC",
         name=f"debug-bc-{ts}",
         resume=None,
         config=config,
