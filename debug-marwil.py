@@ -37,7 +37,7 @@ def main():
         resume=None,
         config=config,
         max_failures=-1,
-        num_samples=1,
+        num_samples=4,
         stop={"time_total_s": 3600 * 10},
         verbose=True,
         progress_reporter=CLIReporter(
