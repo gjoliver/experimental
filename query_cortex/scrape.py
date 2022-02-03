@@ -78,8 +78,11 @@ if __name__ == "__main__":
         reader = csv.reader(f, delimiter=',')
         for i, row in enumerate(reader):
             sess_id = row[0]
+            if not sess_id.startswith("ses_"):
+                continue
+
             d = scrape_cluster(cortex_url, sess_id)
 
             print(i, sess_id)
-            with open(os.path.join(args.output_dir, sess_id + ",json"), "w") as of:
+            with open(os.path.join(args.output_dir, sess_id + ".json"), "w") as of:
                 of.write(json.dumps(d))
