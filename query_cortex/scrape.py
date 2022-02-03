@@ -1,12 +1,20 @@
 '''
+Usage:
+    Start a cluster on your cloud. Click Grafana. Copy and paste the grafana dashboard URL
+    when using the script like below:
 
-Example:
-python scrape.py --grafana-url="https://anyscale-internal-hsrczdm-0000-cust-mon.ray.aws-us-west-2-admin.anyscale-test-production.com/grafana/?orgId=1&token=wmmsuy03W0o-_GssZMMa4kRi3qY-310YnCPK-HBeBZs&var-ClusterID=ses_m9guYEViF2Th1UmN8XftgDrD&refresh=1m"
+    python scrape.py
+        --grafana-url="https://anyscale-internal-hsrczdm-0000-cust-mon.ray.aws-us-west-2-admin.anyscale-test-production.com/grafana/?orgId=1&token=wmmsuy03W0o-_GssZMMa4kRi3qY-310YnCPK-HBeBZs&var-ClusterID=ses_m9guYEViF2Th1UmN8XftgDrD&refresh=1m"
+        --sess-csv=export.csv
+        --output-dir=out
 
 '''
 
 import argparse
+import csv
 from datetime import datetime, timedelta
+import json
+import os
 import requests
 from urllib.parse import parse_qs, quote, urlencode, urlparse, urlunparse
 
@@ -58,6 +66,20 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--grafana-url", help="Copy your grafana URL and paste it here.")
+    parser.add_argument(
+        "--sess-csv", help="CSV file of cluster ids.")
+    parser.add_argument(
+        "--output-dir", help="Directory to write scraped JSON files.")
     args = parser.parse_args()
 
-    print(scrape_cluster(query_url(args.grafana_url), "ses_RTWTjsKXjnqKquSutxAL4hah"))
+    cortex_url = query_url(args.grafana_url)
+
+    with open(args.sess_csv, "r") as f:
+        reader = csv.reader(f, delimiter=',')
+        for i, row in enumerate(reader):
+            sess_id = row[0]
+            d = scrape_cluster(cortex_url, sess_id)
+
+            print(i, sess_id)
+            with open(os.path.join(args.output_dir, sess_id + ",json"), "w") as of:
+                of.write(json.dumps(d))

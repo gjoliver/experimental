@@ -1,6 +1,7 @@
 # Anyscale
 .anyscale.yaml
 example_compute_config.json
+out
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
