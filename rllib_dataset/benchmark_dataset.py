@@ -65,8 +65,8 @@ def main():
     results = tune.run(
         "CQL",
         name=f"dataset-{ts}",
-        keep_checkpoints_num=5,
-        resume="AUTO",
+        checkpoint_at_end=True,
+        local_dir="/tmp/checkpoints",
         config=cql_config,
         max_failures=5,
         num_samples=1,
