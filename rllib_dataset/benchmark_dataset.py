@@ -6,7 +6,6 @@ import ray
 from ray import tune
 from ray.tune import CLIReporter
 from ray.tune.integration.wandb import WandbLoggerCallback
-import wandb
 
 
 def main():
@@ -14,7 +13,7 @@ def main():
         "env": "HalfCheetahBulletEnv-v0",
         "framework": "tf",
         # Use input produced by expert SAC algo.
-        "input": ["~/halfcheetah_expert_sac.zip"],
+        "input": "/Users/jungong/halfcheetah_expert_sac.json",
         "actions_in_input_normalized": True,
         "soft_horizon": False,
         "horizon": 1000,
@@ -66,7 +65,7 @@ def main():
         "CQL",
         name=f"dataset-{ts}",
         checkpoint_at_end=True,
-        local_dir="/tmp/checkpoints",
+        checkpoint_freq=5,
         config=cql_config,
         max_failures=5,
         num_samples=1,
@@ -84,14 +83,6 @@ def main():
             sort_by_metric=True,
             max_report_frequency=30,
         ),
-        callbacks=[
-            WandbLoggerCallback(
-                name=f"run-dataset-{ts}",
-                project="dateset-benchmark",
-                api_key="ec234a418d6c19a4de1c3906f3561e7c1214d933",
-                log_config=False,
-                settings=wandb.Settings(start_method="fork")),
-        ],
     )
 
     results.results_df.to_csv("results.csv")
