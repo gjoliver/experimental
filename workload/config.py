@@ -45,7 +45,7 @@ def construct_trial_config(test: bool):
         "_disable_execution_plan_api": True,
         "eager_tracing": True,
         "num_gpus": num_gpus,
-        "num_rollout_workers": num_workers,
+        "num_workers": num_workers,
         "evaluation_num_workers": evaluation_num_workers,
         "num_envs_per_worker": 1,
         "recreate_failed_workers": True,
