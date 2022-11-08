@@ -96,7 +96,7 @@ class Runner:
                 sync_down_template="mkdir -p {target}; gsutil -mq rsync -r {source} {target}",
                 delete_template="gsutil rm -r {target}",
             ),
-            upload_dir=f"gs://riot-ai-central/{FLAGS.game}",
+            upload_dir=f"gs://<test bucket>/<path>",
             sync_on_checkpoint=False,
         )
         '''
