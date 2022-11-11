@@ -5,6 +5,7 @@ import os
 import ray
 from ray import tune
 
+import checkpointing
 from config import construct_trial_config
 from utils import ImpatientCLIReporter
 
@@ -94,12 +95,12 @@ class Runner:
 
         bucket = os.getenv("BUCKET")
         tune_config["sync_config"] = tune.SyncConfig(
-            syncer=checkpointing.CustomCommandSyncer(
-                sync_up_template="gsutil -mq rsync -r {source} {target}",
-                sync_down_template="mkdir -p {target}; gsutil -mq rsync -r {source} {target}",
-                delete_template="gsutil rm -r {target}",
-            ),
-            upload_dir=f"gs://{bucket}/jun_test/",
+            #syncer=checkpointing.CustomCommandSyncer(
+            #    sync_up_template="gsutil -mq rsync -r {source} {target}",
+            #    sync_down_template="mkdir -p {target}; gsutil -mq rsync -r {source} {target}",
+            #    delete_template="gsutil rm -r {target}",
+            #),
+            upload_dir=f"s3://{bucket}/jun_test?scheme=http",
             sync_on_checkpoint=False,
         )
 
